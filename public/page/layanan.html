@@ -1,0 +1,79 @@
+<!-- MENU UNTUK MO-OJEK -->
+<div ng-show="showOjek">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label for="" class="col-lg-3 col-md-3 col-xs-3 control-label">From</label>
+            <div class="col-lg-9 col-lg-9 col-xs-9">
+                <div class="input-group">
+                    <input type="text" class="form-control">
+                    <span class="input-group-addon" ng-click="showFromNotes = !showFromNotes">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" ng-show="showFromNotes">
+            <label for="" class="col-lg-3 col-md-3 col-xs-3 control-label"></label>
+            <div class="col-lg-9 col-lg-9 col-xs-9">
+                <input type="text" class="form-control" placeholder="Add Note From">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="" class="col-lg-3 col-md-3 col-xs-3 control-label">To</label>
+            <div class="col-lg-9 col-lg-9 col-xs-9">
+                <div class="input-group">
+                    <input type="text" class="form-control">
+                    <span class="input-group-addon" ng-click="showToNotes = !showToNotes">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" ng-show="showToNotes">
+            <label for="" class="col-lg-3 col-md-3 col-xs-3 control-label"></label>
+            <div class="col-lg-9 col-lg-9 col-xs-9">
+                <input type="text" class="form-control" placeholder="Add Note To">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END MENU MO-OJEK -->
+
+<div ng-show="showMakan">
+    <input type="text" class="form-control" placeholder="Cari Makan">
+
+    <hr>
+    
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-5 col-xs-5 col-md-5">
+                    <img src="http://placehold.it/320x200" alt="" class="img-responsive">    
+                </div>    
+            </div>        
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-5 col-xs-5 col-md-5">
+                    <img src="http://placehold.it/320x200" alt="" class="img-responsive">    
+                </div>    
+            </div>        
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-5 col-xs-5 col-md-5">
+                    <img src="http://placehold.it/320x200" alt="" class="img-responsive">    
+                </div>    
+            </div>        
+        </div>
+    </div>
+</div>

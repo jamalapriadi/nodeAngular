@@ -1,0 +1,22 @@
+<legend>List Account</legend>
+
+<input type="text" class="form-control" placeholder="Search" ng-model="cari">
+<hr>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>No.</th>
+			<th>Full Name</th>
+			<th>Email</th>
+			<th>Username</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="p in data|filter:cari">
+			<td>{{$index+1}}</td>
+			<td>{{p.fullname}}</td>
+			<td>{{p.email}}</td>
+			<td>{{p.username}}</td>
+		</tr>
+	</tbody>
+</table>
