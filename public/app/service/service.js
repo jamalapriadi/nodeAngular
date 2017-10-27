@@ -66,7 +66,75 @@ angular.module('recsApp')
 
 		categoryUpdate:function(id,form){
 			return $http.put(baseUrl+'/category/'+id+'?token='+$localStorage.token,form);
-		}
+		},
+
+		categoryDelete:function(id){
+			return $http.delete(baseUrl+'/category/'+id+'?token='+$localStorage.token);
+		},
+
+		bidangstudi:function(){
+			return $http.get(baseUrl+'/bidang-studi?token='+$localStorage.token);
+		},
+
+		bidangstudiSave:function(form){
+			return $http.post(baseUrl+'/bidang-studi?token='+$localStorage.token,form);
+		},
+
+		bidangstudiById:function(id){
+			return $http.get(baseUrl+'/bidang-studi/'+id+'?token='+$localStorage.token);
+		},
+
+		bidangstudiUpdate:function(id,form){
+			return $http.put(baseUrl+'/bidang-studi/'+id+'?token='+$localStorage.token,form);
+		},
+
+		bidangstudiDelete:function(id){
+			return $http.delete(baseUrl+'/bidang-studi/'+id+'?token='+$localStorage.token);
+		},
+
+		industri:function(){
+			return $http.get(baseUrl+'/industri?token='+$localStorage.token);
+		},
+
+		industriSave:function(form){
+			return $http.post(baseUrl+'/industri?token='+$localStorage.token,form);
+		},
+
+		industriById:function(id){
+			return $http.get(baseUrl+'/industri/'+id+'?token='+$localStorage.token);
+		},
+
+		industriUpdate:function(id,form){
+			return $http.put(baseUrl+'/industri/'+id+'?token='+$localStorage.token,form);
+		},
+
+		industriDelete:function(id){
+			return $http.delete(baseUrl+'/industri/'+id+'?token='+$localStorage.token);
+		},
+
+		bidangpekerjaan:function(){
+			return $http.get(baseUrl+'/bidang-pekerjaan?token='+$localStorage.token);
+		},
+
+		bidangpekerjaanSave:function(form){
+			return $http.post(baseUrl+'/bidang-pekerjaan?token='+$localStorage.token,form);
+		},
+
+		bidangpekerjaanById:function(id){
+			return $http.get(baseUrl+'/bidang-pekerjaan/'+id+'?token='+$localStorage.token);
+		},
+
+		bidangpekerjaanUpdate:function(id,form){
+			return $http.put(baseUrl+'/bidang-pekerjaan/'+id+'?token='+$localStorage.token,form);
+		},
+
+		bidangpekerjaanDelete:function(id){
+			return $http.delete(baseUrl+'/bidang-pekerjaan/'+id+'?token='+$localStorage.token);
+		},
+
+		account:function(){
+			return $http.get(baseUrl+'/account?token='+$localStorage.token);
+		},
 	};
 }
 ]);

@@ -109,8 +109,58 @@ angular.module('docsController',[])
     
 })
 
-.controller('adminaccountController',function($scope,$http,$sessionStorage,$location,$localStorage){
-    
+.controller('adminaccountController',function($scope,$timeout,$http,$sessionStorage,$location,$localStorage,Main){
+    $scope.hasils=[];
+
+    $scope.loading=false;
+    $scope.hasils=[];
+    $scope.pesan={};
+    $scope.form={};
+
+    function tampilPesan(){
+        $scope.showMessage=true; 
+        $timeout(function () { $scope.showMessage = false; }, 5000); 
+    }
+
+    function getData(){
+        Main.account()
+            .success(function(result){
+                console.log(result)
+                $scope.hasils=result;
+            })
+            .error(function(err){
+                console.log(err);
+            })
+    }
+
+    getData();
+})
+
+.controller('admindetailaccountController',function($scope,$timeout,$http,$sessionStorage,$location,$localStorage,Main){
+    $scope.hasils=[];
+
+    $scope.loading=false;
+    $scope.hasils=[];
+    $scope.pesan={};
+    $scope.form={};
+
+    function tampilPesan(){
+        $scope.showMessage=true; 
+        $timeout(function () { $scope.showMessage = false; }, 5000); 
+    }
+
+    // function getData(){
+    //     Main.account()
+    //         .success(function(result){
+    //             console.log(result)
+    //             $scope.hasils=result;
+    //         })
+    //         .error(function(err){
+    //             console.log(err);
+    //         })
+    // }
+
+    // getData();
 })
 
 .controller('adminjoblistController',function($scope,$http,$sessionStorage,$location,$localStorage){
@@ -179,17 +229,19 @@ angular.module('docsController',[])
                             $scope.pesan=result.pesan;
                             tampilPesan();
                             $("#myModal").modal("hide");
+                        }else{
+                            $scope.pesan=result.pesan;
                         }
                     });
                 break;
             case 'edit':
                 console.log(id);
                 $scope.loading=true;
-                Main.categoryUpdate(id,this.newForm)
+                Main.categoryUpdate(id,this.form)
                     .success(function(data){
                         $scope.loading=false;
                         $("#myModal").modal("hide");
-                        $scope.newForm={};
+                        $scope.form={};
                         getData();
                         $scope.pesan=data;
                         tampilPesan();
@@ -200,6 +252,380 @@ angular.module('docsController',[])
                 $scope.newForm={};
                 break;
         }
+    };
+
+    $scope.hapus=function(id){
+        swal({   
+            title: "Are you sure?",   
+            text: "Do you want to delete it?",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Yes, delete it!",   
+            cancelButtonText: "No",   
+            closeOnConfirm: false,   
+            closeOnCancel: false 
+        }, function(isConfirm){   
+            if (isConfirm) {     
+                Main.categoryDelete(id)
+                    .success(function(data){
+                        getData();
+                        $scope.pesan=data;
+                        swal("Deleted!", data.pesan, "success");   
+                        tampilPesan();
+                    })
+            } else {     
+                swal("Cancelled", "Your data is safe :)", "error");   
+            } 
+        });
+    };
+
+    getData();
+})
+
+.controller('adminbidangstudiController',function($scope,$timeout,$http,$sessionStorage,$location,$localStorage,Main){
+    var baseUrl="http://localhost:3000/api";
+    $scope.loading=false;
+    $scope.hasils=[];
+    $scope.pesan={};
+    $scope.form={};
+
+    function tampilPesan(){
+        $scope.showMessage=true; 
+        $timeout(function () { $scope.showMessage = false; }, 5000); 
+    }
+
+    function getData(){
+        Main.bidangstudi()
+            .success(function(result){
+                console.log(result)
+                $scope.hasils=result;
+            })
+            .error(function(err){
+                console.log(err);
+            })
+    }
+
+    $scope.action=function(modalstate,id){
+        $scope.modalstate=modalstate;
+        $scope.id=id;
+        $scope.form={};
+
+        switch(modalstate){
+            case "add":
+                $scope.form_title="Add Bidang Studi";
+                $scope.form={bidang_studi_name:''}
+                break;
+            case "edit":
+                $scope.form_title="Update Bidang Studi";
+                $scope.form={bidang_studi_name:''}
+                Main.bidangstudiById(id)
+                    .success(function(data){
+                        $scope.form.bidang_studi_name=data.bidang_studi_name;
+                    })
+                break;
+            default:
+                $scope.form={};
+                break;
+        }
+        console.log(id);
+        $("#myModal").modal('show');
+    };
+
+    $scope.save=function(modalstate,id){
+        switch(modalstate){
+            case "add":
+                $scope.loading=true;
+                Main.bidangstudiSave(this.form)
+                    .success(function(result){
+                        if(result.success==true){
+                            $scope.loading=false;
+                            $scope.form={};
+                            getData();
+                            $scope.pesan=result.pesan;
+                            tampilPesan();
+                            $("#myModal").modal("hide");
+                        }else{
+                            $scope.pesan=result.pesan;
+                        }
+                    });
+                break;
+            case 'edit':
+                console.log(id);
+                $scope.loading=true;
+                Main.bidangstudiUpdate(id,this.form)
+                    .success(function(data){
+                        $scope.loading=false;
+                        $("#myModal").modal("hide");
+                        $scope.form={};
+                        getData();
+                        $scope.pesan=data;
+                        tampilPesan();
+                    })
+                break;
+
+            default:
+                $scope.newForm={};
+                break;
+        }
+    };
+
+    $scope.hapus=function(id){
+        swal({   
+            title: "Are you sure?",   
+            text: "Do you want to delete it?",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Yes, delete it!",   
+            cancelButtonText: "No",   
+            closeOnConfirm: false,   
+            closeOnCancel: false 
+        }, function(isConfirm){   
+            if (isConfirm) {     
+                Main.bidangstudiDelete(id)
+                    .success(function(data){
+                        getData();
+                        $scope.pesan=data;
+                        swal("Deleted!", data.pesan, "success");   
+                        tampilPesan();
+                    })
+            } else {     
+                swal("Cancelled", "Your data is safe :)", "error");   
+            } 
+        });
+    };
+
+    getData();
+})
+
+.controller('adminindustriController',function($scope,$timeout,$http,$sessionStorage,$location,$localStorage,Main){
+    var baseUrl="http://localhost:3000/api";
+    $scope.loading=false;
+    $scope.hasils=[];
+    $scope.pesan={};
+    $scope.form={};
+
+    function tampilPesan(){
+        $scope.showMessage=true; 
+        $timeout(function () { $scope.showMessage = false; }, 5000); 
+    }
+
+    function getData(){
+        Main.industri()
+            .success(function(result){
+                console.log(result)
+                $scope.hasils=result;
+            })
+            .error(function(err){
+                console.log(err);
+            })
+    }
+
+    $scope.action=function(modalstate,id){
+        $scope.modalstate=modalstate;
+        $scope.id=id;
+        $scope.form={};
+
+        switch(modalstate){
+            case "add":
+                $scope.form_title="Add Industri";
+                $scope.form={industri_name:''}
+                break;
+            case "edit":
+                $scope.form_title="Update Industri";
+                $scope.form={industri_name:''}
+                Main.industriById(id)
+                    .success(function(data){
+                        $scope.form.industri_name=data.industri_name;
+                    })
+                break;
+            default:
+                $scope.form={};
+                break;
+        }
+        console.log(id);
+        $("#myModal").modal('show');
+    };
+
+    $scope.save=function(modalstate,id){
+        switch(modalstate){
+            case "add":
+                $scope.loading=true;
+                Main.industriSave(this.form)
+                    .success(function(result){
+                        if(result.success==true){
+                            $scope.loading=false;
+                            $scope.form={};
+                            getData();
+                            $scope.pesan=result.pesan;
+                            tampilPesan();
+                            $("#myModal").modal("hide");
+                        }else{
+                            $scope.pesan=result.pesan;
+                        }
+                    });
+                break;
+            case 'edit':
+                console.log(id);
+                $scope.loading=true;
+                Main.industriUpdate(id,this.form)
+                    .success(function(data){
+                        $scope.loading=false;
+                        $("#myModal").modal("hide");
+                        $scope.form={};
+                        getData();
+                        $scope.pesan=data;
+                        tampilPesan();
+                    })
+                break;
+
+            default:
+                $scope.newForm={};
+                break;
+        }
+    };
+
+    $scope.hapus=function(id){
+        swal({   
+            title: "Are you sure?",   
+            text: "Do you want to delete it?",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Yes, delete it!",   
+            cancelButtonText: "No",   
+            closeOnConfirm: false,   
+            closeOnCancel: false 
+        }, function(isConfirm){   
+            if (isConfirm) {     
+                Main.industriDelete(id)
+                    .success(function(data){
+                        getData();
+                        $scope.pesan=data;
+                        swal("Deleted!", data.pesan, "success");   
+                        tampilPesan();
+                    })
+            } else {     
+                swal("Cancelled", "Your data is safe :)", "error");   
+            } 
+        });
+    };
+
+    getData();
+})
+
+.controller('adminbidangpekerjaanController',function($scope,$timeout,$http,$sessionStorage,$location,$localStorage,Main){
+    var baseUrl="http://localhost:3000/api";
+    $scope.loading=false;
+    $scope.hasils=[];
+    $scope.pesan={};
+    $scope.form={};
+
+    function tampilPesan(){
+        $scope.showMessage=true; 
+        $timeout(function () { $scope.showMessage = false; }, 5000); 
+    }
+
+    function getData(){
+        Main.bidangpekerjaan()
+            .success(function(result){
+                console.log(result)
+                $scope.hasils=result;
+            })
+            .error(function(err){
+                console.log(err);
+            })
+    }
+
+    $scope.action=function(modalstate,id){
+        $scope.modalstate=modalstate;
+        $scope.id=id;
+        $scope.form={};
+
+        switch(modalstate){
+            case "add":
+                $scope.form_title="Add Bidang Pekerjaan";
+                $scope.form={bidang_pekerjaan_name:''}
+                break;
+            case "edit":
+                $scope.form_title="Update Bidang Pekerjaan";
+                $scope.form={bidang_pekerjaan_name:''}
+                Main.bidangpekerjaanById(id)
+                    .success(function(data){
+                        $scope.form.bidang_pekerjaan_name=data.bidang_pekerjaan_name;
+                    })
+                break;
+            default:
+                $scope.form={};
+                break;
+        }
+        console.log(id);
+        $("#myModal").modal('show');
+    };
+
+    $scope.save=function(modalstate,id){
+        switch(modalstate){
+            case "add":
+                $scope.loading=true;
+                Main.bidangpekerjaanSave(this.form)
+                    .success(function(result){
+                        if(result.success==true){
+                            $scope.loading=false;
+                            $scope.form={};
+                            getData();
+                            $scope.pesan=result.pesan;
+                            tampilPesan();
+                            $("#myModal").modal("hide");
+                        }else{
+                            $scope.pesan=result.pesan;
+                        }
+                    });
+                break;
+            case 'edit':
+                console.log(id);
+                $scope.loading=true;
+                Main.bidangpekerjaanUpdate(id,this.form)
+                    .success(function(data){
+                        $scope.loading=false;
+                        $("#myModal").modal("hide");
+                        $scope.form={};
+                        getData();
+                        $scope.pesan=data;
+                        tampilPesan();
+                    })
+                break;
+
+            default:
+                $scope.newForm={};
+                break;
+        }
+    };
+
+    $scope.hapus=function(id){
+        swal({   
+            title: "Are you sure?",   
+            text: "Do you want to delete it?",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Yes, delete it!",   
+            cancelButtonText: "No",   
+            closeOnConfirm: false,   
+            closeOnCancel: false 
+        }, function(isConfirm){   
+            if (isConfirm) {     
+                Main.bidangpekerjaanDelete(id)
+                    .success(function(data){
+                        getData();
+                        $scope.pesan=data;
+                        swal("Deleted!", data.pesan, "success");   
+                        tampilPesan();
+                    })
+            } else {     
+                swal("Cancelled", "Your data is safe :)", "error");   
+            } 
+        });
     };
 
     getData();

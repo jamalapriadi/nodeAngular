@@ -9,8 +9,8 @@
             <ul class="nav nav-tabs">
                 <li role="presentation"><a ui-sref="admin/bidang-pekerjaan">Bidang Pekerjaan</a></li>
                 <li role="presentation"><a ui-sref="admin/industri">Industri</a></li>
-                <li role="presentation"><a ui-sref="admin/bidang-studi">Bidang Studi</a></li>
-                <li role="presentation" class="active"><a ui-sref="admin/category">Category</a></li>
+                <li role="presentation" class="active"><a ui-sref="admin/bidang-studi">Bidang Studi</a></li>
+                <li role="presentation"><a ui-sref="admin/category">Category</a></li>
             </ul>
 
             <br>
@@ -22,27 +22,16 @@
                 <thead>
                     <tr>
                         <th>No.</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Type</th>
+                        <th>Nama Bidang Studi</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="p in hasils">
                         <td>{{$index+1}}</td>
-                        <td>{{p.first_name}}</td>
-                        <td>{{p.last_name}}</td>
-                        <td>{{p.username}}</td>
-                        <td>{{p.email}}</td>
-                        <td>{{p.type_user[0]}}</td>
-                        <td width="13%">
+                        <td>{{p.bidang_studi_name}}</td>
+                        <td width="10%">
                             <div class="btn-group">
-                                <a ui-sref="admin/account-detail({id:p._id})" class="btn btn-info btn-sm" title="History">
-                                    <i class="fa fa-history"></i>
-                                </a>
                                 <a ng-click="action('edit',p._id)" class="btn btn-warning btn-sm">
                                     <i class="fa fa-edit"></i>
                                 </a>
@@ -73,8 +62,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Nama Category</label>
-                        <input type="text" name="category_name" ng-model="form.category_name" class="form-control" id="category_name" ng-value="form.category_name" placeholder="Nama Category">
+                        <label for="exampleInputEmail1">Bidang Studi</label>
+                        <input type="text" name="bidang_studi_name" ng-model="form.bidang_studi_name" class="form-control" id="bidang_studi_name" ng-value="form.bidang_studi_name" placeholder="Bidang Studi">
                     </div>
 
                     <hr>

@@ -123,6 +123,15 @@ var recsApp=angular.module('recsApp',['docsController','ui.router','ngStorage','
         controller:'adminaccountController'
     })
 
+    .state('admin/account-detail',{
+        url:'/admin/account-detail/:id',
+        templateUrl:'/page/admin/detail_account.html',
+        resolve: {
+            redirectIfNotAuthenticated: _redirectIfNotAuthenticated
+        },
+        controller:'admindetailaccountController'
+    })
+
     .state('admin/joblist',{
         url:'/admin/joblist',
         templateUrl:'page/admin/joblist.html',
@@ -139,5 +148,32 @@ var recsApp=angular.module('recsApp',['docsController','ui.router','ngStorage','
             redirectIfNotAuthenticated: _redirectIfNotAuthenticated
         },
         controller:'admincategoryController'
+    })
+
+    .state('admin/bidang-studi',{
+        url:'/admin/bidang-studi',
+        templateUrl:'page/admin/bidang-studi.html',
+        resolve: {
+            redirectIfNotAuthenticated: _redirectIfNotAuthenticated
+        },
+        controller:'adminbidangstudiController'
+    })
+
+    .state('admin/industri',{
+        url:'/admin/industri',
+        templateUrl:'page/admin/industri.html',
+        resolve: {
+            redirectIfNotAuthenticated: _redirectIfNotAuthenticated
+        },
+        controller:'adminindustriController'
+    })
+
+    .state('admin/bidang-pekerjaan',{
+        url:'/admin/bidangpekerjaan',
+        templateUrl:'page/admin/bidangpekerjaan.html',
+        resolve: {
+            redirectIfNotAuthenticated: _redirectIfNotAuthenticated
+        },
+        controller:'adminbidangpekerjaanController'
     })
 })

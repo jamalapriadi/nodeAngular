@@ -15,10 +15,10 @@
 
             <br>
             <a class="btn btn-primary btn-sm" ng-click="action('add',0)">
-                Tambah Category
+                Add New
             </a>
             <br><br>
-            <table datatable="" class="table table-bordered">
+            <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th>No.</th>
@@ -30,12 +30,12 @@
                     <tr ng-repeat="p in hasils">
                         <td>{{$index+1}}</td>
                         <td>{{p.category_name}}</td>
-                        <td>
+                        <td width="10%">
                             <div class="btn-group">
                                 <a ng-click="action('edit',p._id)" class="btn btn-warning btn-sm">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <a ng-click="action('delete',p._id)" class="btn btn-danger btn-sm">
+                                <a ng-click="hapus(p._id)" class="btn btn-danger btn-sm">
                                     <i class="fa fa-trash"></i>
                                 </a>
                             </div>

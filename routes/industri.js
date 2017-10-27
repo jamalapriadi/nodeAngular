@@ -17,7 +17,13 @@ router.post('/',function(req,res,next){
     Industri.create(req.body,function(err,post){
         if(err) return next(err);
 
-        res.json(post);
+        //res.json(post);
+        res.json(
+            {
+                'success':true,
+                'pesan':'Data berhasil disimpan'
+            }
+        )
     });
 });
 
