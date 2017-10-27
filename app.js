@@ -8,11 +8,12 @@ var mongoose = require('mongoose');
 var jwt = require('jsonwebtoken');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
+var users = require('./routes/account');
 var config = require('./config');
 var bidangpekerjaan = require('./routes/bidangpekerjaan');
 var bidangstudi = require('./routes/bidangstudi');
 var industri = require('./routes/industri');
+var category = require('./routes/category');
 var authenticate = require('./routes/authenticate');
 var Account = require('./models/Account');
 
@@ -39,7 +40,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users', users);
 
 
 /* api */
@@ -73,14 +73,15 @@ apiRoutes.post('/authenticate', function(req, res) {
         const payload = {
           admin: user.type_user 
         };
-        var token = jwt.sign(payload, app.get('superSecret'), {
-          expiresInMinutes: 1440 // expires in 24 hours
+        var token = jwt.sign(payload, app.get('telkomSecret'), {
+          expiresIn : 60*60*24 // expires in 24 hours
         });
         
         // return the information including token as JSON
         res.json({
           success: true,
           message: 'Enjoy your token!',
+          type_user:user.type_user,
           token: token
         });
       }   
@@ -115,9 +116,12 @@ apiRoutes.use(function(req,res,next){
   }
 });
 
+/* untuk router yang terautentikasi */
 apiRoutes.use('/bidang-pekerjaan',bidangpekerjaan);
 apiRoutes.use('/bidang-studi',bidangstudi);
 apiRoutes.use('/industri',industri);
+apiRoutes.use('/category',category);
+apiRoutes.use('/account',users);
 
 app.use('/api',apiRoutes);
 

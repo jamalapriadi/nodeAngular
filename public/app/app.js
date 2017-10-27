@@ -1,55 +1,143 @@
-var recsApp=angular.module('recsApp',['docsController','ui.router'])
+var recsApp=angular.module('recsApp',['docsController','ui.router','ngStorage','datatables'])
 
-
-.config(function($stateProvider, $urlRouterProvider){
+.config(function($stateProvider, $httpProvider, $urlRouterProvider){
     $urlRouterProvider.otherwise('/');
     
+    // $httpProvider.interceptors.push(['$q', '$location', '$localStorage', function($q, $location, $localStorage) {
+    //     return {
+    //         'request': function (config) {
+    //             config.headers = config.headers || {};
+    //             if ($localStorage.token) {
+    //                 config.headers.Authorization = 'Bearer ' + $localStorage.token;
+    //             }
+    //             return config;
+    //         },
+    //         'responseError': function(response) {
+    //             if(response.status === 401 || response.status === 403) {
+    //                 $location.path('/signin');
+    //             }
+    //             return $q.reject(response);
+    //         }
+    //     };
+    // }]);
+    
+    function _skipIfAuthenticated($q, $state, $localStorage) {
+        var defer = $q.defer();
+        if ($localStorage.token) {
+            if($localStorage.type_user=="admin"){
+                $timeout(function () {
+                    $location.path('/admin');
+                });    
+            }else if($localStorage.type_user=="owner"){
+                $timeout(function () {
+                    $location.path('/owner');
+                });
+            }else if($localStorage.type_user=="member"){
+                $timeout(function () {
+                    $location.path('/member');
+                });
+            }else{
+                $timeout(function () {
+                    $location.path('/');
+                });
+            }
+
+            defer.reject(); /* (1) */
+        }else{
+            defer.resolve(); /* (2) */
+        }
+        return defer.promise;
+    }
+    
+    function _redirectIfNotAuthenticated($q, $state, $localStorage,$timeout,$location) {
+        var defer = $q.defer();
+        if ($localStorage.token) {
+            defer.resolve(); /* (3) */
+        }else{
+            $timeout(function () {
+                $location.path('/signin');
+            });
+            defer.reject();
+        }
+        return defer.promise;
+    }
+    
     $stateProvider
-        .state('login',{
-            url:'/login',
-            templateUrl:'page/login.html',
-            controller:'loginController'
-        })
+    .state('home',{
+        url:'/',
+        templateUrl:'page/home.html',
+        controller:'homeController'
+    })
+    
+    .state('signin',{
+        url:'/signin',
+        templateUrl:'page/signin.html',
+        resolve: {
+            skipIfAuthenticated: _skipIfAuthenticated
+        },
+        controller:'signinController'
+    })
+    
+    .state('signup',{
+        url:'/signup',
+        templateUrl:'page/signup.html',
+        resolve: {
+            skipIfAuthenticated: _skipIfAuthenticated
+        },
+        controller:'signupController'
+    })
 
-        .state('home',{
-            url:'/',
-            templateUrl:'page/home.html',
-            controller:'homeController'
-        })
+    .state('signout',{
+        url:'/signup',
+        resolve: {
+            redirectIfNotAuthenticated: _redirectIfNotAuthenticated
+        },
+        controller:'signoutController'
+    })
 
-        .state('signin',{
-            url:'/signin',
-            templateUrl:'page/signin.html',
-            controller:'signinController'
-        })
+    /*admin menu */
+    .state('admin',{
+        url:'/admin',
+        templateUrl:'page/admin/index.html',
+        resolve: {
+            redirectIfNotAuthenticated: _redirectIfNotAuthenticated
+        },
+        controller:'adminController'
+    })
 
-        .state('signup',{
-            url:'/signup',
-            templateUrl:'page/signup.html',
-            controller:'signupController'
-        })
+    .state('admin/master-data',{
+        url:'/admin/master-data',
+        templateUrl:'page/admin/master.html',
+        resolve: {
+            redirectIfNotAuthenticated: _redirectIfNotAuthenticated
+        },
+        controller:'masterdataController'
+    })
 
-        .state('account',{
-            url:'/account',
-            templateUrl:'page/account.html',
-            controller:'accountController'
-        })
+    .state('admin/account',{
+        url:'/admin/account',
+        templateUrl:'page/admin/account.html',
+        resolve: {
+            redirectIfNotAuthenticated: _redirectIfNotAuthenticated
+        },
+        controller:'adminaccountController'
+    })
 
-        .state('joblist',{
-            url:'/joblist',
-            templateUrl:'page/joblist.html',
-            controller:'joblistController'
-        })
+    .state('admin/joblist',{
+        url:'/admin/joblist',
+        templateUrl:'page/admin/joblist.html',
+        resolve: {
+            redirectIfNotAuthenticated: _redirectIfNotAuthenticated
+        },
+        controller:'adminjoblistController'
+    })
 
-        .state('search',{
-            url:'/search',
-            templateUrl:'page/search.html',
-            controller:'searchController'
-        })
-
-        .state('details',{
-            url:'/details/{id}',
-            templateUrl:'page/detail.html',
-            controller:'detailController'
-        })
+    .state('admin/category',{
+        url:'/admin/category',
+        templateUrl:'page/admin/category.html',
+        resolve: {
+            redirectIfNotAuthenticated: _redirectIfNotAuthenticated
+        },
+        controller:'admincategoryController'
+    })
 })
