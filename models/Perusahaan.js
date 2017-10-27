@@ -1,6 +1,7 @@
 var mongoose=require('mongoose'),
 Schema = mongoose.Schema,
 relationship = require('mongoose-relationship');
+var UserSchema=require('../models/Account');
 
 var PerusahaanSchema=new mongoose.Schema({
     nama_perusahaan:String,

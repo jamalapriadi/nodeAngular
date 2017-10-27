@@ -1,6 +1,9 @@
 var mongoose=require('mongoose'),
 Schema = mongoose.Schema,
 relationship = require('mongoose-relationship');
+var PerusahaanSchema = require('../models/Perusahaan');
+var SpesialisasiSchema=require('../models/Spesialisasi');
+var UserSchema=require('../models/Account');
 
 var LokerSchema=new mongoose.Schema({
     perusahaan:{

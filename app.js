@@ -16,6 +16,7 @@ var industri = require('./routes/industri');
 var category = require('./routes/category');
 var authenticate = require('./routes/authenticate');
 var Account = require('./models/Account');
+var loker = require('./routes/loker');
 
 var app = express();
 
@@ -47,6 +48,29 @@ var apiRoutes = express.Router();
 apiRoutes.get('/',function(req,res){
   res.json({message:'Welcome to my api'});
 });
+
+apiRoutes.post('/register',function(req,res){
+  var chris = new Account({
+    first_name: req.body.first_name,
+    last_name:req.body.last_name,
+    username: req.body.username,
+    email:req.body.email,
+    password: req.body.password,
+    type_user:"member",
+    remember_token:"",
+    active:"Y",
+    profile:{},
+    fiel:[],
+    pendidikan:[],
+    pengalaman:[]
+  });
+
+  chris.save(function(err) {
+    if (err) throw err;
+  
+    console.log('User saved successfully!');
+  });
+})
 
 /* route authentikate disini */
 apiRoutes.post('/authenticate', function(req, res) {
@@ -122,6 +146,7 @@ apiRoutes.use('/bidang-studi',bidangstudi);
 apiRoutes.use('/industri',industri);
 apiRoutes.use('/category',category);
 apiRoutes.use('/account',users);
+apiRoutes.use('/loker',loker);
 
 app.use('/api',apiRoutes);
 

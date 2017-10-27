@@ -135,6 +135,22 @@ angular.module('recsApp')
 		account:function(){
 			return $http.get(baseUrl+'/account?token='+$localStorage.token);
 		},
+
+		profile:function(id){
+			return $http.get(baseUrl+'/account/'+id+'?token='+$localStorage.token);
+		},
+
+		accountDelete:function(id){
+			return $http.delete(baseUrl+'/account/'+id+'?token='+$localStorage.token);
+		},
+
+		joblist:function(){
+			return $http.get(baseUrl+'/loker?token='+$localStorage.token);
+		},
+
+		register:function(form){
+			return $http.post(baseUrl+'/register',form);
+		},
 	};
 }
 ]);

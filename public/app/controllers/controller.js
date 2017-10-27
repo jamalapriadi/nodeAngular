@@ -59,24 +59,22 @@ angular.module('docsController',[])
     };
 })
 
-.controller('signupController',function($scope,$http,$localStorage,$sessionStorage){
-    // $scope.signup = function() {
-    //     var formData = {
-    //         email: $scope.email,
-    //         password: $scope.password
-    //     }
+.controller('signupController',function($scope,$rootScope,$http,$localStorage,$sessionStorage,Main){
+    $scope.form={};
+    
+    $scope.signup = function() {
+        var formData = {
+            email: $scope.form.email,
+            password: $scope.form.password,
+            first_name:$scope.form.first_name,
+            last_name:$scope.form.last_name
+        }
 
-    //     Main.save(formData, function(res) {
-    //         if (res.type == false) {
-    //             alert(res.data)
-    //         } else {
-    //             $localStorage.token = res.data.token;
-    //             window.location = "/"   
-    //         }
-    //     }, function() {
-    //         $rootScope.error = 'Failed to signup';
-    //     })
-    // };
+        Main.register(this.form)
+            .success(function(result){
+                console.log(result);
+            })
+    };
 })
 
 .controller('detailController',function($scope,$http,$stateParams){
@@ -133,11 +131,38 @@ angular.module('docsController',[])
             })
     }
 
+    $scope.hapus=function(id){
+        swal({   
+            title: "Are you sure?",   
+            text: "Do you want to delete it?",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Yes, delete it!",   
+            cancelButtonText: "No",   
+            closeOnConfirm: false,   
+            closeOnCancel: false 
+        }, function(isConfirm){   
+            if (isConfirm) {     
+                Main.accountDelete(id)
+                    .success(function(data){
+                        getData();
+                        $scope.pesan=data;
+                        swal("Deleted!", data.pesan, "success");   
+                        tampilPesan();
+                    })
+            } else {     
+                swal("Cancelled", "Your data is safe :)", "error");   
+            } 
+        });
+    };
+
     getData();
 })
 
-.controller('admindetailaccountController',function($scope,$timeout,$http,$sessionStorage,$location,$localStorage,Main){
-    $scope.hasils=[];
+.controller('admindetailaccountController',function($scope,$timeout,$http,$sessionStorage,$location,$localStorage,$stateParams,Main){
+    $scope.id=$stateParams.id;
+    $scope.hasils={};
 
     $scope.loading=false;
     $scope.hasils=[];
@@ -149,22 +174,45 @@ angular.module('docsController',[])
         $timeout(function () { $scope.showMessage = false; }, 5000); 
     }
 
-    // function getData(){
-    //     Main.account()
-    //         .success(function(result){
-    //             console.log(result)
-    //             $scope.hasils=result;
-    //         })
-    //         .error(function(err){
-    //             console.log(err);
-    //         })
-    // }
+    function getData(){
+        Main.profile($scope.id)
+            .success(function(result){
+                console.log(result)
+                $scope.hasils=result;
+            })
+            .error(function(err){
+                console.log(err);
+            })
+    }
 
-    // getData();
+    getData();
 })
 
-.controller('adminjoblistController',function($scope,$http,$sessionStorage,$location,$localStorage){
+.controller('adminjoblistController',function($scope,$http,$sessionStorage,$location,$localStorage,Main,$timeout){
+    $scope.hasils=[];
     
+    $scope.loading=false;
+    $scope.hasils=[];
+    $scope.pesan={};
+    $scope.form={};
+
+    function tampilPesan(){
+        $scope.showMessage=true; 
+        $timeout(function () { $scope.showMessage = false; }, 5000); 
+    }
+
+    function getData(){
+        Main.joblist()
+            .success(function(result){
+                console.log(result)
+                $scope.hasils=result;
+            })
+            .error(function(err){
+                console.log(err);
+            })
+    }
+
+    getData();
 })
 
 .controller('admincategoryController',function($scope,$timeout,$http,$sessionStorage,$location,$localStorage,Main){

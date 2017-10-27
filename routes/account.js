@@ -21,6 +21,35 @@ router.post('/',function(req,res,next){
     });
 });
 
+router.post('/register',function(req,res,next){
+    var user=new Account(
+        {
+            first_name:req.body.first_name,
+            last_name:req.body.last_name,
+            email:req.body.email,
+            password:req.body.password,
+            type_user:'member',
+            remember_token:'',
+            active:'Y',
+            profile:[],
+            file:[],
+            pendidikan:[],
+            pengalaman:[]
+        }
+    );
+
+    user.save(function (err) {
+        if (err) return handleError(err);
+        // saved!
+        res.json(
+            {
+                'success':true,
+                'pesan':'Data Berhasil disimpan'
+            }
+        );
+    })
+})
+
 /* show by id */
 router.get('/:id',function(req,res,next){
     Account.findById(req.params.id,function(err,post){

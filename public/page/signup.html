@@ -37,23 +37,27 @@
                 <hr>
                 <form action="" >
                     <div class="form-group">
+                        <label for="" class="control-label">Username</label>
+                        <input type="text" class="form-control" ng-model="form.username" placeholder="Username">
+                    </div>
+                    <div class="form-group">
                         <label for="" class="control-label">Nama Depan</label>
-                        <input type="text" class="form-control" placeholder="Email">
+                        <input type="text" class="form-control" ng-model="form.first_name" placeholder="Nama Depan">
                     </div>
                     <div class="form-group">
                         <label for="" class="control-label">Nama Belakang</label>
-                        <input type="text" class="form-control" placeholder="Email">
+                        <input type="text" class="form-control" ng-model="form.last_name" placeholder="Nama Belakang">
                     </div>
                     <div class="form-group">
                         <label for="" class="control-label">Email</label>
-                        <input type="text" class="form-control" placeholder="Email">
+                        <input type="text" class="form-control" ng-model="form.email" placeholder="Email">
                     </div>
                     <div class="form-group">
                         <label for="" class="control-label">Password</label>
-                        <input type="password" class="form-control" placeholder="Password">
+                        <input type="password" class="form-control" ng-model="form.password" placeholder="Password">
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-primary btn-block">
+                        <button class="btn btn-primary btn-block" ng-click="signup()">
                             Daftar
                         </button>
 
