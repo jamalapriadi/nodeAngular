@@ -51,6 +51,34 @@ var apiRoutes = express.Router();
 apiRoutes.get('/',function(req,res){
   res.json({message:'Welcome to my api'});
 });
+apiRoutes.post('/register',function(req,res){
+  var user=new Account(
+    {
+          first_name:req.body.first_name,
+          last_name:req.body.last_name,
+          email:req.body.email,
+          password:req.body.password,
+          type_user:'member',
+          remember_token:'',
+          active:'Y',
+          profile:[],
+          file:[],
+          pendidikan:[],
+          pengalaman:[]
+      }
+  );
+
+  user.save(function (err) {
+      if (err) return handleError(err);
+      // saved!
+      res.json(
+          {
+              'success':true,
+              'pesan':'Data Berhasil disimpan'
+          }
+      );
+  })
+})
 
 /* route authentikate disini */
 apiRoutes.post('/authenticate', function(req, res) {
