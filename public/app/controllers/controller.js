@@ -764,6 +764,24 @@ angular.module('docsController',[])
 /* controller perusahaan */
 .controller('adminperusahaanController',function($scope,$timeout,$http,$sessionStorage,$location,$localStorage,Main){
     $scope.form={};
+    $scope.hasils=[];
+
+    function tampilPesan(){
+        $scope.showMessage=true; 
+        $timeout(function () { $scope.showMessage = false; }, 5000); 
+    }
+
+    
+    function getData(){
+        Main.perusahaan()
+            .success(function(result){
+                console.log(result)
+                $scope.hasils=result;
+            })
+            .error(function(err){
+                console.log(err);
+            })
+    }
 
     $scope.action=function(modalstate,id){
         $scope.modalstate=modalstate;
@@ -778,9 +796,11 @@ angular.module('docsController',[])
             case "edit":
                 $scope.form_title="Update Bidang Pekerjaan";
                 $scope.form={nama_perusahaan:''}
-                Main.bidangpekerjaanById(id)
+                Main.perusahaanById(id)
                     .success(function(data){
                         $scope.form.nama_perusahaan=data.nama_perusahaan;
+                        $scope.form.informasi_perusahaan=data.informasi_perusahaan;
+                        $scope.form.why_join_us=data.why_join_us;
                     })
                 break;
             default:
@@ -790,6 +810,127 @@ angular.module('docsController',[])
         console.log(id);
         $("#myModal").modal('show');
     };
+
+    $scope.save=function(modalstate,id){
+        switch(modalstate){
+            case "add":
+                $scope.loading=true;
+                Main.perusahaanSave(this.form)
+                    .success(function(result){
+                        if(result.success==true){
+                            $scope.loading=false;
+                            $scope.form={};
+                            getData();
+                            $scope.pesan=result.pesan;
+                            tampilPesan();
+                            $("#myModal").modal("hide");
+                        }else{
+                            $scope.pesan=result.pesan;
+                        }
+                    });
+                break;
+            case 'edit':
+                console.log(id);
+                $scope.loading=true;
+                Main.perusahaanUpdate(id,this.form)
+                    .success(function(data){
+                        $scope.loading=false;
+                        $("#myModal").modal("hide");
+                        $scope.form={};
+                        getData();
+                        $scope.pesan=data;
+                        tampilPesan();
+                    })
+                break;
+
+            default:
+                $scope.newForm={};
+                break;
+        }
+    };
+
+    $scope.hapus=function(id){
+        swal({   
+            title: "Are you sure?",   
+            text: "Do you want to delete it?",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Yes, delete it!",   
+            cancelButtonText: "No",   
+            closeOnConfirm: false,   
+            closeOnCancel: false 
+        }, function(isConfirm){   
+            if (isConfirm) {     
+                Main.perusahaanDelete(id)
+                    .success(function(data){
+                        getData();
+                        $scope.pesan=data;
+                        swal("Deleted!", data.pesan, "success");   
+                        tampilPesan();
+                    })
+            } else {     
+                swal("Cancelled", "Your data is safe :)", "error");   
+            } 
+        });
+    };
+
+    getData();
+})
+
+.controller('admindetailperusahaanController',function($scope,$stateParams,$timeout,$http,$sessionStorage,$location,$localStorage,Main){
+    $scope.id=$stateParams.id;
+    $scope.hasils={};
+
+    $scope.loading=false;
+    $scope.pesan={};
+    $scope.form={};
+
+    function tampilPesan(){
+        $scope.showMessage=true; 
+        $timeout(function () { $scope.showMessage = false; }, 5000); 
+    }
+
+    function getData(){
+        Main.perusahaanById($scope.id)
+            .success(function(result){
+                console.log(result)
+                $scope.hasils=result;
+            })
+            .error(function(err){
+                console.log(err);
+            })
+    }
+
+    $scope.action=function(modalstate,id){
+        $scope.modalstate=modalstate;
+        $scope.id=id;
+        $scope.form={};
+
+        switch(modalstate){
+            case "add":
+                $scope.form_title="Add New Company";
+                $scope.form={position:'',informasi_perusahaan:'',why_join_us:''}
+                break;
+            case "edit":
+                $scope.form_title="Update Bidang Pekerjaan";
+                $scope.form={nama_perusahaan:''}
+                Main.perusahaanById(id)
+                    .success(function(data){
+                        $scope.form.nama_perusahaan=data.nama_perusahaan;
+                        $scope.form.informasi_perusahaan=data.informasi_perusahaan;
+                        $scope.form.why_join_us=data.why_join_us;
+                    })
+                break;
+            default:
+                $scope.form={};
+                break;
+        }
+        console.log(id);
+        $("#myModal").modal('show');
+    };
+
+    getData();
 })
 
 .controller('companyperusahaanController',function($scope,$timeout,$http,$sessionStorage,$location,$localStorage,Main){

@@ -5,7 +5,7 @@ var UserSchema=require('../models/Account');
 
 var PerusahaanSchema=new mongoose.Schema({
     nama_perusahaan:String,
-	Informasi_perusahaan:String,
+	informasi_perusahaan:String,
     why_join_us:String,
     user:{
         type:Schema.Types.ObjectId,

@@ -155,6 +155,26 @@ angular.module('recsApp')
 		accountSave:function(form){
 			return $http.post(baseUrl+'/account?token='+$localStorage.token,form);
 		},
+
+		perusahaan:function(){
+			return $http.get(baseUrl+'/perusahaan?token='+$localStorage.token);
+		},
+
+		perusahaanSave:function(form){
+			return $http.post(baseUrl+'/perusahaan?token='+$localStorage.token,form);
+		},
+
+		perusahaanDelete:function(id){
+			return $http.delete(baseUrl+'/perusahaan/'+id+'?token='+$localStorage.token);
+		},
+
+		perusahaanById:function(id){
+			return $http.get(baseUrl+'/perusahaan/'+id+'?token='+$localStorage.token);
+		},
+
+		perusahaanUpdate:function(id,form){
+			return $http.put(baseUrl+'/perusahaan/'+id+'?token='+$localStorage.token,form);
+		},
 	};
 }
 ]);

@@ -19,6 +19,7 @@ var category = require('./routes/category');
 var authenticate = require('./routes/authenticate');
 var Account = require('./models/Account');
 var loker = require('./routes/loker');
+var perusahaan = require('./routes/perusahaan');
 
 var app = express();
 
@@ -119,6 +120,7 @@ apiRoutes.use('/industri',industri);
 apiRoutes.use('/category',category);
 apiRoutes.use('/account',users);
 apiRoutes.use('/loker',loker);
+apiRoutes.use('/perusahaan',perusahaan);
 
 app.use('/api',apiRoutes);
 

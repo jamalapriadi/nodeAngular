@@ -16,6 +16,39 @@
             <a ng-click="action('add',0)" class="btn btn-primary">
                 <i class="fa fa-add"></i> Add New
             </a>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Nama Perusahaan </th>
+                        <th>Informasi Perusahaan</th>
+                        <th>Why Join Us</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="p in hasils">
+                        <td>{{$index+1}}</td>
+                        <td>{{p.nama_perusahaan}}</td>
+                        <td>{{p.informasi_perusahaan}}</td>
+                        <td>{{p.why_join_us}}</td>
+                        <td width="15%">
+                            <div class="btn-group">
+                                <a ui-sref="perusahaan/detail({id:p._id})" class="btn btn-info btn-sm" title="detail">
+                                    <i class="fa fa-history"></i>
+                                </a>
+                                <a ng-click="action('edit',p._id)" class="btn btn-warning btn-sm">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a ng-click="hapus(p._id)" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -41,12 +74,12 @@
     
                         <div class="form-group">
                             <label for="exampleInputEmail1">Informasi Perusahaan</label>
-                            <input type="text" name="informasi_perusahaan" ng-model="form.informasi_perusahaan" class="form-control" id="informasi_perusahaan" ng-value="form.informasi_perusahaan" placeholder="Informasi Perusahaan">
+                            <input type="text" name="informasi_perusahaan" ng-model="form.informasi_perusahaan" class="form-control" id="Informasi_perusahaan" ng-value="form.Informasi_perusahaan" placeholder="Informasi Perusahaan">
                         </div>
     
                         <div class="form-group">
                             <label for="exampleInputEmail1">Why Join Us</label>
-                            <textarea name="why" id="why" ng-model="why_join_us" cols="30" rows="10" class="form-control"></textarea>
+                            <input type="text" name="why_join_us" ng-model="form.why_join_us" class="form-control" id="why_join_us" ng-value="form.why_join_us" placeholder="Informasi Perusahaan">
                         </div>
     
                         <hr>

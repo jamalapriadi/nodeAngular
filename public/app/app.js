@@ -225,5 +225,14 @@ var recsApp=angular.module('recsApp',['docsController','ui.router','ngStorage','
         },
         controller:'companyperusahaanController'
     })
+
+    .state('perusahaan/detail',{
+        url:'/perusahaan/detail/:id',
+        templateUrl:'/page/company/detail_perusahaan.html',
+        resolve: {
+            redirectIfNotAuthenticated: _redirectIfNotAuthenticated
+        },
+        controller:'admindetailperusahaanController'
+    })
     /* end company */
 })
