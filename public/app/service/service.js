@@ -43,8 +43,8 @@ angular.module('recsApp')
 		signin: function(data, success, error) {
 			$http.post(baseUrl + '/authenticate', data).success(success).error(error)
 		},
-		me: function(success, error) {
-			$http.get(baseUrl + '/me').success(success).error(error)
+		me: function(id) {
+			return $http.get(baseUrl + '/account/me/'+id+'?token='+$localStorage.token);
 		},
 		logout: function(success) {
 			changeUser({});
@@ -150,6 +150,10 @@ angular.module('recsApp')
 
 		register:function(form){
 			return $http.post(baseUrl+'/register',form);
+		},
+
+		accountSave:function(form){
+			return $http.post(baseUrl+'/account?token='+$localStorage.token,form);
 		},
 	};
 }

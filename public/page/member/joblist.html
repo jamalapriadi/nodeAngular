@@ -1,0 +1,24 @@
+<ng-include src="'/page/member/header.html'"></ng-include>
+
+<div class="container">
+	<div class="input-group">
+	  	<input type="text" class="form-control" placeholder="Search" ng-model="cari">
+	  	<span class="input-group-addon">
+	  		<i class="glyphicon glyphicon-search"></i>
+	  	</span>
+	</div>
+
+	<div class="span12" ng-repeat="p in hasils|filter:cari">
+        <h1>{{p.loker}}</h1>
+        <p>{{p.jobdesc}}</p>
+        <div>
+            <div class="more label">
+            	<a ui-sref="details(p.id)">Read more</a>
+            </div> 
+        </div> 
+        <div class="clear"></div>
+        <hr>
+    </div>
+
+    <br>
+</div>

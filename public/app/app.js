@@ -176,4 +176,54 @@ var recsApp=angular.module('recsApp',['docsController','ui.router','ngStorage','
         },
         controller:'adminbidangpekerjaanController'
     })
+
+    /* url member */
+    .state('member',{
+        url:'/member',
+        templateUrl:'page/member/index.html',
+        resolve: {
+            redirectIfNotAuthenticated: _redirectIfNotAuthenticated
+        },
+        controller:'memberController'
+    })
+
+    .state('joblist',{
+        url:'/joblist',
+        templateUrl:'page/member/joblist.html',
+        resolve: {
+            redirectIfNotAuthenticated: _redirectIfNotAuthenticated
+        },
+        controller:'adminjoblistController'
+    })
+    /* end url member */
+
+    /* company */
+    .state('company',{
+        url:'/company',
+        templateUrl:'page/company/login.html',
+        controller:'logincompanyController',
+        resolve: {
+            skipIfAuthenticated: _skipIfAuthenticated
+        },
+        controller:'signinController'
+    })
+
+    .state('perusahaan',{
+        url:'/perusahaan',
+        templateUrl:'page/company/perusahaan.html',
+        resolve: {
+            redirectIfNotAuthenticated: _redirectIfNotAuthenticated
+        },
+        controller:'adminperusahaanController'
+    })
+
+    .state('perusahaan/joblist',{
+        url:'/perusahaan/joblist',
+        templateUrl:'page/company/joblist.html',
+        resolve: {
+            redirectIfNotAuthenticated: _redirectIfNotAuthenticated
+        },
+        controller:'companyperusahaanController'
+    })
+    /* end company */
 })

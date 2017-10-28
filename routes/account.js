@@ -17,7 +17,13 @@ router.post('/',function(req,res,next){
     Account.create(req.body,function(err,post){
         if(err) return next(err);
 
-        res.json(post);
+        //res.json(post);
+        res.json(
+            {
+                success:true,
+                pesan:'Account berhasil dibuat'
+            }
+        )
     });
 });
 
@@ -52,6 +58,14 @@ router.post('/register',function(req,res,next){
 
 /* show by id */
 router.get('/:id',function(req,res,next){
+    Account.findById(req.params.id,function(err,post){
+        if(err) return next(err);
+
+        res.json(post);
+    });
+});
+
+router.get('/me/:id',function(req,res,next){
     Account.findById(req.params.id,function(err,post){
         if(err) return next(err);
 

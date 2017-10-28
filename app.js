@@ -6,6 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var jwt = require('jsonwebtoken');
+var bcrypt = require('bcrypt');
+var SALT_WORK_FACTOR = 10;
 
 var index = require('./routes/index');
 var users = require('./routes/account');
@@ -49,51 +51,22 @@ apiRoutes.get('/',function(req,res){
   res.json({message:'Welcome to my api'});
 });
 
-apiRoutes.post('/register',function(req,res){
-  var chris = new Account({
-    first_name: req.body.first_name,
-    last_name:req.body.last_name,
-    username: req.body.username,
-    email:req.body.email,
-    password: req.body.password,
-    type_user:"member",
-    remember_token:"",
-    active:"Y",
-    profile:{},
-    fiel:[],
-    pendidikan:[],
-    pengalaman:[]
-  });
-
-  chris.save(function(err) {
-    if (err) throw err;
-  
-    console.log('User saved successfully!');
-  });
-})
-
 /* route authentikate disini */
 apiRoutes.post('/authenticate', function(req, res) {
-  
-  // find the user
-  Account.findOne({
-    email: req.body.email
-  }, function(err, user) {
-    
+  Account.findOne({ email: req.body.email }, function(err, user) {
     if (err) throw err;
-    
-    if (!user) {
-      res.json({ success: false, message: 'Authentication failed. User not found.' });
-    } else if (user) {
-      
-      // check if password matches
-      if (user.password != req.body.password) {
-        res.json({ success: false, message: 'Authentication failed. Wrong password.' });
-      } else {
-        
-        // if user is found and password is right
-        // create a token with only our given payload
-        // we don't want to pass in the entire user since that has the password
+
+    if(!user){
+      res.json(
+        {
+          success:false,
+          pesan:'Authentication failed, User not found'
+        }
+      )
+    }else if(user){
+      user.comparePassword(req.body.password, function(err, isMatch) {
+        if (err) throw err;
+        console.log('Password123:', isMatch); // -&gt; Password123: true
         const payload = {
           admin: user.type_user 
         };
@@ -106,12 +79,11 @@ apiRoutes.post('/authenticate', function(req, res) {
           success: true,
           message: 'Enjoy your token!',
           type_user:user.type_user,
+          iduser:user._id,
           token: token
         });
-      }   
-      
+      });
     }
-    
   });
 });
 

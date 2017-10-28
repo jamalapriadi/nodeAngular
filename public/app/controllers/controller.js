@@ -1,9 +1,5 @@
 angular.module('docsController',[])
 
-.controller('loginController',function($scope){
-    
-})
-
 .controller('homeController',function($scope,$http,$localStorage){
     $scope.data=[];
     // function showData(){
@@ -33,6 +29,7 @@ angular.module('docsController',[])
             } else {
                 $localStorage.token = res.token;
                 $localStorage.type_user=res.type_user;
+                $localStorage.iduser=res.iduser;
 
                 if(res.type_user=="admin"){
                     $timeout(function () {
@@ -63,13 +60,6 @@ angular.module('docsController',[])
     $scope.form={};
     
     $scope.signup = function() {
-        var formData = {
-            email: $scope.form.email,
-            password: $scope.form.password,
-            first_name:$scope.form.first_name,
-            last_name:$scope.form.last_name
-        }
-
         Main.register(this.form)
             .success(function(result){
                 console.log(result);
@@ -82,7 +72,16 @@ angular.module('docsController',[])
 })
 
 .controller('accountController',function($scope,$http){
+    $scope.loading=false;
+    $scope.pesan={};
+    $scope.form={};
     $scope.data=[];
+
+    function tampilPesan(){
+        $scope.showMessage=true; 
+        $timeout(function () { $scope.showMessage = false; }, 5000); 
+    }
+
     function showData(){
         $http.get("http://localhost:5000/api/getdata")
             .then(function(result){
@@ -90,6 +89,8 @@ angular.module('docsController',[])
                 console.log($scope.data);
             })
     }
+
+    
 
     showData();
 })
@@ -130,6 +131,66 @@ angular.module('docsController',[])
                 console.log(err);
             })
     }
+
+    $scope.action=function(modalstate,id){
+        $scope.modalstate=modalstate;
+        $scope.id=id;
+        $scope.form={};
+
+        switch(modalstate){
+            case "add":
+                $scope.form_title="Add Account";
+                $scope.form={type_user:'',first_name:'',last_name:'',username:'',email:'',password:''}
+                break;
+            case "edit":
+                $scope.form_title="Add Account";
+                $scope.form={type_user:'',first_name:'',last_name:'',username:'',email:'',password:''}
+                break;
+            default:
+                $scope.form={};
+                break;
+        }
+        console.log(id);
+        $("#myModal").modal('show');
+    };
+
+    $scope.save=function(modalstate,id){
+        switch(modalstate){
+            case "add":
+                $scope.loading=true;
+                Main.accountSave(this.form)
+                    .success(function(result){
+                        if(result.success==true){
+                            $scope.loading=false;
+                            $scope.form={};
+                            getData();
+                            $scope.pesan=result.pesan;
+                            tampilPesan();
+                            $("#myModal").modal("hide");
+                        }else{
+                            $scope.pesan=result.pesan;
+                        }
+                    });
+                break;
+            case 'edit':
+                console.log(id);
+                $scope.loading=true;
+                Main.categoryUpdate(id,this.form)
+                    .success(function(data){
+                        $scope.loading=false;
+                        $("#myModal").modal("hide");
+                        $scope.form={};
+                        getData();
+                        $scope.pesan=data;
+                        tampilPesan();
+                    })
+                break;
+
+            default:
+                $scope.newForm={};
+                break;
+        }
+    };
 
     $scope.hapus=function(id){
         swal({   
@@ -679,6 +740,62 @@ angular.module('docsController',[])
     getData();
 })
 /* end controller admin */
+.controller('memberController',function($scope,$timeout,$http,$sessionStorage,$location,$localStorage,Main){
+    $scope.id=$localStorage.iduser;
+    $scope.hasils={};
+
+    function getData(){
+        Main.me($scope.id)
+            .success(function(result){
+                console.log(result)
+                $scope.hasils=result;
+            })
+            .error(function(err){
+                console.log(err);
+            })
+    }
+
+    getData();
+})
+/* controller member */
+
+/* end controller member */
+
+/* controller perusahaan */
+.controller('adminperusahaanController',function($scope,$timeout,$http,$sessionStorage,$location,$localStorage,Main){
+    $scope.form={};
+
+    $scope.action=function(modalstate,id){
+        $scope.modalstate=modalstate;
+        $scope.id=id;
+        $scope.form={};
+
+        switch(modalstate){
+            case "add":
+                $scope.form_title="Add New Company";
+                $scope.form={nama_perusahaan:'',informasi_perusahaan:'',why_join_us:''}
+                break;
+            case "edit":
+                $scope.form_title="Update Bidang Pekerjaan";
+                $scope.form={nama_perusahaan:''}
+                Main.bidangpekerjaanById(id)
+                    .success(function(data){
+                        $scope.form.nama_perusahaan=data.nama_perusahaan;
+                    })
+                break;
+            default:
+                $scope.form={};
+                break;
+        }
+        console.log(id);
+        $("#myModal").modal('show');
+    };
+})
+
+.controller('companyperusahaanController',function($scope,$timeout,$http,$sessionStorage,$location,$localStorage,Main){
+    
+})
+/* end controller perusahaan */
 
 .controller('signoutController',function($scope,$http,$sessionStorage,$location,$localStorage,Main){
     //Main.logout();
